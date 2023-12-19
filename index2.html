@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Translation</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #ff5555;
+        }
+
+        .record-button {
+            background-color: #ff5555;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .output-text {
+            margin-top: 20px;
+            font-size: 18px;
+            color: red;
+        }
+
+        .logo-container {
+            margin-top: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        img {
+            max-width: 50%; /* 50% kleiner */
+            height: auto;
+            border-radius: 10px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        async function recognizeFromMicrophoneAsync() {
+            const response = await fetch('http://127.0.0.1:5000/start_speech_recognition');
+            const result = await response.json();
+            console.log('API Response:', result); // Konsolenausgabe hinzugefügt
+            return result;
+        }
+
+        function startSpeechTranslation() {
+            recognizeFromMicrophoneAsync().then((result) => {
+                console.log('Processed Result:', result); // Konsolenausgabe hinzugefügt
+                document.getElementById('outputText').innerHTML = `Recognized Text: ${result.recognized_text}<br>Translation: ${result.translation}`;
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Speech Translation</h1>
+        <button class="record-button" onclick="startSpeechTranslation()">Start Recording for Speech Translation</button>
+        <div class="output-text" id="outputText"></div>
+        <div class="logo-container">
+            <img src="C:\Sprache\Bilder\robo-to-logo_318-50667.webp" alt="Bildbeschreibung">
+        </div>
+    </div>
+</body>
+</html>

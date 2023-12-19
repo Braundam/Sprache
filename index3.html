@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Synthesis</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #ff5555;
+        }
+
+        #textInput {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #ff5555;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #outputText {
+            margin-top: 20px;
+            font-size: 18px;
+            color: red;
+        }
+
+        .logo-container {
+            margin-top: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        img {
+            max-width: 50%; /* Vollbreite */
+            height: auto;
+            border-radius: 10px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function synthesizeSpeech() {
+            var text = document.getElementById('textInput').value;
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://127.0.0.1:5000/synthesize_speech',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({ 'text': text }),
+                success: function (response) {
+                    document.getElementById('outputText').innerText = response.message;
+                },
+                error: function (error) {
+                    document.getElementById('outputText').innerText = 'Error: ' + error.responseJSON.error;
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Speech Synthesis</h1>
+        <textarea id="textInput" placeholder="Enter text to synthesize"></textarea>
+        <button onclick="synthesizeSpeech()">Synthesize Speech</button>
+        <div id="outputText"></div>
+        <div class="logo-container">
+            <img src="C:\Sprache\Bilder\robo-to-logo_318-50667.webp" alt="Bildbeschreibung">
+        </div>
+    </div>
+</body>
+</html>
